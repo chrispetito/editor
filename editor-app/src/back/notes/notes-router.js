@@ -12,10 +12,10 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   db.insertNote(req.body)
     .then(note => {
-      res.status(201).json(notes);
+      res.status(201).json(note);
     })
     .catch(err => {
-      res.status(500).json.json(500);
+      res.status(500).json(err);
     });
 });
 
