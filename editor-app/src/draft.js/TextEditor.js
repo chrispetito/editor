@@ -1,6 +1,6 @@
 import React from "react";
 import { Editor, EditorState, RichUtils } from "draft-js";
-import '../css/index.css'
+import "../css/index.css";
 
 class TextEditor extends React.Component {
   constructor(props) {
@@ -68,10 +68,20 @@ class TextEditor extends React.Component {
 
   render() {
     return (
-      <div style={styles.editor} onClick={this.focusEditor}>
-        <button className='bold-button' onClick={this.boldOnClick}>BOLD</button>
-        <button onClick={this.italicOnClick}>ITALIC</button>
-        <button onClick={this.underlineOnClick}>UNDERLINE</button>
+        <div className='editor-div'>
+        <div className="button-bar">
+        {" "}
+        <button className="bold-button" onClick={this.boldOnClick}>
+          <i class="fas fa-bold"></i>
+        </button>
+        <button onClick={this.italicOnClick}>
+          <i class="fas fa-italic"></i>
+        </button>
+        <button onClick={this.underlineOnClick}>
+          <i class="fas fa-underline"></i>
+        </button>
+      </div>
+      <div style={styles.editor} onClick={this.focusEditor} className='text-editor'>
         <Editor
           //   ref={this.setEditor}
           editorState={this.state.editorState}
@@ -79,6 +89,7 @@ class TextEditor extends React.Component {
           onChange={this.onChange}
           blockStyleFn={this.blockStyleFn}
         />
+      </div>
       </div>
     );
   }
@@ -88,7 +99,7 @@ const styles = {
   editor: {
     border: "1px solid gray",
     minHeight: "10em",
-    width: "50%",
+    // width: "50%",
     textAlign: "left",
     padding: 12
   }
