@@ -1,0 +1,8 @@
+.bold-button {
+  border: 1px solid red;
+}
+@media (max-width: 500px) {
+  .bold-button {
+    border: 1px solid green;
+  }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Editor, EditorState, RichUtils } from "draft-js";
+import '../css/index.css'
 
 class TextEditor extends React.Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class TextEditor extends React.Component {
   render() {
     return (
       <div style={styles.editor} onClick={this.focusEditor}>
-        <button onClick={this.boldOnClick}>BOLD</button>
+        <button className='bold-button' onClick={this.boldOnClick}>BOLD</button>
         <button onClick={this.italicOnClick}>ITALIC</button>
         <button onClick={this.underlineOnClick}>UNDERLINE</button>
         <Editor
@@ -88,7 +89,8 @@ const styles = {
     border: "1px solid gray",
     minHeight: "10em",
     width: "50%",
-    textAlign: "left"
+    textAlign: "left",
+    padding: 12
   }
 };
 
