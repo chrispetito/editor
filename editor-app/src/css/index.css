@@ -1,0 +1,16 @@
+.editor-div {
+  width: 50%;
+}
+.button-bar {
+  height: 2em;
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 500px) {
+  .button-bar .bold-button {
+    border: 1px solid green;
+  }
+}
+div.DraftEditor-root {
+  height: 20vh;
+}
