@@ -81,16 +81,6 @@ const plugins = [toolbarPlugin];
 const text =
   "In this editor a toolbar shows up once you select part of the text …";
 
-  // async function getNote() {
-  //   let note = await axios.get('http://localhost:5000/api/notes/6')
-  //   console.log(renderHTML(note.data.body))
-  //   this.setState({
-  //     something: note.data.body
-  //   })
-  // }
-  // getNote()
-
-
 export default class CustomToolbarEditor extends Component {
   constructor() {
     super();
@@ -157,7 +147,6 @@ componentDidMount() {
                 <UnorderedListButton {...externalProps} />
                 <OrderedListButton {...externalProps} />
                 <BlockquoteButton {...externalProps} />
-                {/* <CodeBlockButton {...externalProps} /> */}
               </div>
             )}
           </Toolbar>
