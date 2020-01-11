@@ -1,9 +1,16 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from "react";
+//editor
+import Editor from "draft-js-plugins-editor";
+import {EditorState} from 'draft-js'
+import { convertToHTML, convertFromHTML } from "draft-convert";
+import renderHTML from "react-render-html";
 
-import Editor, { createEditorStateWithText } from "draft-js-plugins-editor";
-
+//plugins
 import createToolbarPlugin, { Separator } from "draft-js-static-toolbar-plugin";
+import createHashtagPlugin from 'draft-js-hashtag-plugin';
+
+//buttons
 import {
   ItalicButton,
   BoldButton,
@@ -17,13 +24,16 @@ import {
   BlockquoteButton,
   CodeBlockButton
 } from "draft-js-buttons";
+
+//styling
 import editorStyles from "../css//editorStyles.css";
 import "draft-js-static-toolbar-plugin/lib/plugin.css";
+import 'draft-js-hashtag-plugin/lib/plugin.css';
 import "../css/index.css";
-import { convertToHTML, convertFromHTML } from "draft-convert";
+
 import axios from "axios";
-import renderHTML from "react-render-html";
-import {EditorState} from 'draft-js'
+
+const hashtagPlugin = createHashtagPlugin()
 
 class HeadlinesPicker extends Component {
   componentDidMount() {
@@ -76,7 +86,7 @@ class HeadlinesButton extends Component {
 
 const toolbarPlugin = createToolbarPlugin();
 const { Toolbar } = toolbarPlugin;
-const plugins = [toolbarPlugin];
+const plugins = [toolbarPlugin, hashtagPlugin];
 const text =
   "<p>In this editor a toolbar shows up once you select part of the text …</p><h1>asdfasdf</h1><h2>asdfasdf</h2><h3>asdfasdf</h3><ul><li>asdfasdf</li><li><strong>asdfasdf</strong></li><li><strong><em>asdfasdf</em></strong></li></ul><ol><li><strong><em><u>asdfasdf</u></em></strong></li><li><strong><em><u>awesome</u></em></strong></li></ol><blockquote><strong><em>asdfasdfasdfasdf</em></strong></blockquote>";
 
