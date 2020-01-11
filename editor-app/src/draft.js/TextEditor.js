@@ -173,7 +173,7 @@ export default class CustomToolbarEditor extends Component {
             ref={element => {
               this.editor = element;
             }}
-            spellCheck={true}
+            // spellCheck={true}
           />
         </div>
         {/* <div className="render-test">{this.state.something}</div> */}
