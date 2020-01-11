@@ -20,6 +20,8 @@ import {
 import editorStyles from "../css//editorStyles.css";
 import "draft-js-static-toolbar-plugin/lib/plugin.css";
 import "../css/index.css";
+import { convertToHTML } from "draft-convert";
+import axios from "axios";
 
 class HeadlinesPicker extends Component {
   componentDidMount() {
@@ -63,7 +65,7 @@ class HeadlinesButton extends Component {
     return (
       <div className="headlineButtonWrapper">
         <button onClick={this.onClick} className="headlineButton">
-          <i class="fas fa-heading"></i>
+          <i className="fas fa-heading"></i>
         </button>
       </div>
     );
@@ -77,9 +79,13 @@ const text =
   "In this editor a toolbar shows up once you select part of the text …";
 
 export default class CustomToolbarEditor extends Component {
-  state = {
-    editorState: createEditorStateWithText(text)
-  };
+  constructor() {
+    super();
+    this.state = {
+      editorState: createEditorStateWithText(text)
+    };
+    console.log(this.state.editorState.getCurrentContent());
+  }
 
   onChange = editorState => {
     this.setState({
@@ -91,9 +97,21 @@ export default class CustomToolbarEditor extends Component {
     this.editor.focus();
   };
 
+  publishNote = () => {
+    const html = convertToHTML(this.state.editorState.getCurrentContent());
+
+    const post = {
+      body: html
+    };
+
+    axios.post("http://localhost:5000/api/notes", post, (req, res) => {
+      res.status(201).json(post)
+    });
+  }
+
   render() {
     return (
-      <div class="editor-div">
+      <div className="editor-div">
         <header className="toolbar-header">
           {" "}
           <Toolbar>
@@ -112,6 +130,7 @@ export default class CustomToolbarEditor extends Component {
               </div>
             )}
           </Toolbar>
+          <button onClick={this.publishNote}>enter</button>
         </header>
 
         <div className={editorStyles.editor} onClick={this.focus}>
