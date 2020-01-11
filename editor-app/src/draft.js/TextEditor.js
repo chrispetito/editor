@@ -20,6 +20,9 @@ import {
 import editorStyles from "../css//editorStyles.css";
 import "draft-js-static-toolbar-plugin/lib/plugin.css";
 import "../css/index.css";
+import { convertToHTML } from "draft-convert";
+import axios from "axios";
+import renderHTML from 'react-render-html'
 
 class HeadlinesPicker extends Component {
   componentDidMount() {
@@ -52,6 +55,7 @@ class HeadlinesPicker extends Component {
   }
 }
 
+
 class HeadlinesButton extends Component {
   onClick = () =>
     // A button can call `onOverrideContent` to replace the content
@@ -59,11 +63,12 @@ class HeadlinesButton extends Component {
     // menus or requesting additional information from the user.
     this.props.onOverrideContent(HeadlinesPicker);
 
+
   render() {
     return (
       <div className="headlineButtonWrapper">
         <button onClick={this.onClick} className="headlineButton">
-          <i class="fas fa-heading"></i>
+          <i className="fas fa-heading"></i>
         </button>
       </div>
     );
@@ -77,9 +82,29 @@ const text =
   "In this editor a toolbar shows up once you select part of the text …";
 
 export default class CustomToolbarEditor extends Component {
-  state = {
-    editorState: createEditorStateWithText(text)
-  };
+  constructor() {
+    super();
+
+    this.state = {
+      something: null,
+      editorState: createEditorStateWithText(text)
+    };
+    console.log(this.state.editorState.getCurrentContent());
+  }
+getNote = async () => {
+  let note = await axios.get('http://localhost:5000/api/notes/15')
+  console.log(renderHTML(note.data.body))
+  this.setState({
+    something: renderHTML(note.data.body)
+  })
+  console.log(this.state.something)
+}
+
+// getNote()
+
+componentDidMount() {
+  this.getNote()
+}
 
   onChange = editorState => {
     this.setState({
@@ -91,9 +116,23 @@ export default class CustomToolbarEditor extends Component {
     this.editor.focus();
   };
 
+  publishNote = () => {
+    const html = convertToHTML(this.state.editorState.getCurrentContent());
+
+    const post = {
+      body: html
+    };
+
+    axios.post("http://localhost:5000/api/notes", post, (req, res) => {
+      console.log('hello')
+      res.status(201).json(post)
+    });
+    console.log('hello')
+  }
+
   render() {
     return (
-      <div class="editor-div">
+      <div className="editor-div">
         <header className="toolbar-header">
           {" "}
           <Toolbar>
@@ -108,10 +147,10 @@ export default class CustomToolbarEditor extends Component {
                 <UnorderedListButton {...externalProps} />
                 <OrderedListButton {...externalProps} />
                 <BlockquoteButton {...externalProps} />
-                <CodeBlockButton {...externalProps} />
               </div>
             )}
           </Toolbar>
+          <button onClick={this.publishNote}>enter</button>
         </header>
 
         <div className={editorStyles.editor} onClick={this.focus}>
@@ -124,6 +163,7 @@ export default class CustomToolbarEditor extends Component {
             }}
           />
         </div>
+        <div className='render-test'>{this.state.something}</div>
       </div>
     );
   }
