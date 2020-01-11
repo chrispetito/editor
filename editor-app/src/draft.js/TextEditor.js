@@ -15,14 +15,12 @@ import {
   ItalicButton,
   BoldButton,
   UnderlineButton,
-  CodeButton,
   HeadlineOneButton,
   HeadlineTwoButton,
   HeadlineThreeButton,
   UnorderedListButton,
   OrderedListButton,
-  BlockquoteButton,
-  CodeBlockButton
+  BlockquoteButton
 } from "draft-js-buttons";
 
 //styling
@@ -34,6 +32,12 @@ import "../css/index.css";
 import axios from "axios";
 
 const hashtagPlugin = createHashtagPlugin()
+const toolbarPlugin = createToolbarPlugin();
+const { Toolbar } = toolbarPlugin;
+const plugins = [toolbarPlugin, hashtagPlugin];
+
+
+
 
 class HeadlinesPicker extends Component {
   componentDidMount() {
@@ -84,9 +88,7 @@ class HeadlinesButton extends Component {
   }
 }
 
-const toolbarPlugin = createToolbarPlugin();
-const { Toolbar } = toolbarPlugin;
-const plugins = [toolbarPlugin, hashtagPlugin];
+
 const text =
   "<p>In this editor a toolbar shows up once you select part of the text …</p><h1>asdfasdf</h1><h2>asdfasdf</h2><h3>asdfasdf</h3><ul><li>asdfasdf</li><li><strong>asdfasdf</strong></li><li><strong><em>asdfasdf</em></strong></li></ul><ol><li><strong><em><u>asdfasdf</u></em></strong></li><li><strong><em><u>awesome</u></em></strong></li></ol><blockquote><strong><em>asdfasdfasdfasdf</em></strong></blockquote>";
 
@@ -156,6 +158,7 @@ export default class CustomToolbarEditor extends Component {
                 <UnorderedListButton {...externalProps} />
                 <OrderedListButton {...externalProps} />
                 <BlockquoteButton {...externalProps} />
+                
               </div>
             )}
           </Toolbar>
