@@ -1,28 +1,43 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from "react";
+//editor
+import Editor from "draft-js-plugins-editor";
+import {EditorState} from 'draft-js'
+import { convertToHTML, convertFromHTML } from "draft-convert";
+import renderHTML from "react-render-html";
 
-import Editor, { createEditorStateWithText } from "draft-js-plugins-editor";
-
+//plugins
 import createToolbarPlugin, { Separator } from "draft-js-static-toolbar-plugin";
+import createHashtagPlugin from 'draft-js-hashtag-plugin';
+
+//buttons
 import {
   ItalicButton,
   BoldButton,
   UnderlineButton,
-  CodeButton,
   HeadlineOneButton,
   HeadlineTwoButton,
   HeadlineThreeButton,
   UnorderedListButton,
   OrderedListButton,
-  BlockquoteButton,
-  CodeBlockButton
+  BlockquoteButton
 } from "draft-js-buttons";
+
+//styling
 import editorStyles from "../css//editorStyles.css";
 import "draft-js-static-toolbar-plugin/lib/plugin.css";
+import 'draft-js-hashtag-plugin/lib/plugin.css';
 import "../css/index.css";
-import { convertToHTML } from "draft-convert";
+
 import axios from "axios";
-import renderHTML from 'react-render-html'
+
+const hashtagPlugin = createHashtagPlugin()
+const toolbarPlugin = createToolbarPlugin();
+const { Toolbar } = toolbarPlugin;
+const plugins = [toolbarPlugin, hashtagPlugin];
+
+
+
 
 class HeadlinesPicker extends Component {
   componentDidMount() {
@@ -55,14 +70,12 @@ class HeadlinesPicker extends Component {
   }
 }
 
-
 class HeadlinesButton extends Component {
   onClick = () =>
     // A button can call `onOverrideContent` to replace the content
     // of the toolbar. This can be useful for displaying sub
     // menus or requesting additional information from the user.
     this.props.onOverrideContent(HeadlinesPicker);
-
 
   render() {
     return (
@@ -75,36 +88,34 @@ class HeadlinesButton extends Component {
   }
 }
 
-const toolbarPlugin = createToolbarPlugin();
-const { Toolbar } = toolbarPlugin;
-const plugins = [toolbarPlugin];
-const text =
-  "In this editor a toolbar shows up once you select part of the text …";
 
+const text =
+  "<p>In this editor a toolbar shows up once you select part of the text …</p><h1>asdfasdf</h1><h2>asdfasdf</h2><h3>asdfasdf</h3><ul><li>asdfasdf</li><li><strong>asdfasdf</strong></li><li><strong><em>asdfasdf</em></strong></li></ul><ol><li><strong><em><u>asdfasdf</u></em></strong></li><li><strong><em><u>awesome</u></em></strong></li></ol><blockquote><strong><em>asdfasdfasdfasdf</em></strong></blockquote>";
+
+  
 export default class CustomToolbarEditor extends Component {
   constructor() {
     super();
-
     this.state = {
       something: null,
-      editorState: createEditorStateWithText(text)
+      editorState: EditorState.createWithContent(convertFromHTML(text))
     };
     console.log(this.state.editorState.getCurrentContent());
   }
-getNote = async () => {
-  let note = await axios.get('http://localhost:5000/api/notes/15')
-  console.log(renderHTML(note.data.body))
-  this.setState({
-    something: renderHTML(note.data.body)
-  })
-  console.log(this.state.something)
-}
+  getNote = async () => {
+    let note = await axios.get("http://localhost:5000/api/notes/15");
+    // console.log(renderHTML(note.data.body));
+    this.setState({
+      something: renderHTML(note.data.body)
+    });
+    console.log(this.state.something);
+  };
 
-// getNote()
+  // getNote()
 
-componentDidMount() {
-  this.getNote()
-}
+  componentDidMount() {
+    this.getNote();
+  }
 
   onChange = editorState => {
     this.setState({
@@ -124,11 +135,11 @@ componentDidMount() {
     };
 
     axios.post("http://localhost:5000/api/notes", post, (req, res) => {
-      console.log('hello')
-      res.status(201).json(post)
+      console.log("hello");
+      res.status(201).json(post);
     });
-    console.log('hello')
-  }
+    console.log("hello");
+  };
 
   render() {
     return (
@@ -147,6 +158,7 @@ componentDidMount() {
                 <UnorderedListButton {...externalProps} />
                 <OrderedListButton {...externalProps} />
                 <BlockquoteButton {...externalProps} />
+                
               </div>
             )}
           </Toolbar>
@@ -161,9 +173,10 @@ componentDidMount() {
             ref={element => {
               this.editor = element;
             }}
+            spellCheck={true}
           />
         </div>
-        <div className='render-test'>{this.state.something}</div>
+        {/* <div className="render-test">{this.state.something}</div> */}
       </div>
     );
   }
