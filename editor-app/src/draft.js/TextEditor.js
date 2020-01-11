@@ -22,6 +22,7 @@ import "draft-js-static-toolbar-plugin/lib/plugin.css";
 import "../css/index.css";
 import { convertToHTML } from "draft-convert";
 import axios from "axios";
+import renderHTML from 'react-render-html'
 
 class HeadlinesPicker extends Component {
   componentDidMount() {
@@ -54,12 +55,14 @@ class HeadlinesPicker extends Component {
   }
 }
 
+
 class HeadlinesButton extends Component {
   onClick = () =>
     // A button can call `onOverrideContent` to replace the content
     // of the toolbar. This can be useful for displaying sub
     // menus or requesting additional information from the user.
     this.props.onOverrideContent(HeadlinesPicker);
+
 
   render() {
     return (
@@ -78,14 +81,40 @@ const plugins = [toolbarPlugin];
 const text =
   "In this editor a toolbar shows up once you select part of the text …";
 
+  // async function getNote() {
+  //   let note = await axios.get('http://localhost:5000/api/notes/6')
+  //   console.log(renderHTML(note.data.body))
+  //   this.setState({
+  //     something: note.data.body
+  //   })
+  // }
+  // getNote()
+
+
 export default class CustomToolbarEditor extends Component {
   constructor() {
     super();
+
     this.state = {
+      something: null,
       editorState: createEditorStateWithText(text)
     };
     console.log(this.state.editorState.getCurrentContent());
   }
+getNote = async () => {
+  let note = await axios.get('http://localhost:5000/api/notes/15')
+  console.log(renderHTML(note.data.body))
+  this.setState({
+    something: renderHTML(note.data.body)
+  })
+  console.log(this.state.something)
+}
+
+// getNote()
+
+componentDidMount() {
+  this.getNote()
+}
 
   onChange = editorState => {
     this.setState({
@@ -105,8 +134,10 @@ export default class CustomToolbarEditor extends Component {
     };
 
     axios.post("http://localhost:5000/api/notes", post, (req, res) => {
+      console.log('hello')
       res.status(201).json(post)
     });
+    console.log('hello')
   }
 
   render() {
@@ -126,7 +157,7 @@ export default class CustomToolbarEditor extends Component {
                 <UnorderedListButton {...externalProps} />
                 <OrderedListButton {...externalProps} />
                 <BlockquoteButton {...externalProps} />
-                <CodeBlockButton {...externalProps} />
+                {/* <CodeBlockButton {...externalProps} /> */}
               </div>
             )}
           </Toolbar>
@@ -143,6 +174,7 @@ export default class CustomToolbarEditor extends Component {
             }}
           />
         </div>
+        <div className='render-test'>{this.state.something}</div>
       </div>
     );
   }

@@ -9,6 +9,16 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/:id", (req, res) => {
+  db.findById(req.params.id)
+    .then(note => {
+      res.status(200).json(note);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
 router.post("/", (req, res) => {
   db.insertNote(req.body)
     .then(note => {
@@ -19,4 +29,4 @@ router.post("/", (req, res) => {
     });
 });
 
-module.exports = router
+module.exports = router;
