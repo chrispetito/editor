@@ -144,10 +144,10 @@ export default class CustomToolbarEditor extends Component {
   render() {
     return (
       <div className="editor-div">
+      {/* <h2>hello</h2> */}
         <header className="toolbar-header">
           {" "}
           <Toolbar>
-            {// may be use React.Fragment instead of div to improve perfomance after React 16
             externalProps => (
               <div className="button-menu">
                 <BoldButton {...externalProps} />
