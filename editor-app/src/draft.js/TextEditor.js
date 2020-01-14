@@ -103,7 +103,7 @@ export default class CustomToolbarEditor extends Component {
     console.log(this.state.editorState.getCurrentContent());
   }
   getNote = async () => {
-    let note = await axios.get("http://localhost:5000/api/notes/15");
+    let note = await axios.get("http://localhost:5000/api/notes/20");
     // console.log(renderHTML(note.data.body));
     this.setState({
       something: renderHTML(note.data.body)
@@ -164,7 +164,7 @@ export default class CustomToolbarEditor extends Component {
           </Toolbar>
           <button onClick={this.publishNote}>enter</button>
         </header>
-
+              <div className='render-test'>{this.state.something}</div>
         <div className={editorStyles.editor} onClick={this.focus}>
           <Editor
             editorState={this.state.editorState}
