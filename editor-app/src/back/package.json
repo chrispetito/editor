@@ -11,7 +11,7 @@
     "draft-js-inline-toolbar-plugin": "^3.0.1",
     "draft-js-plugins-editor": "^3.0.0",
     "draft-js-static-toolbar-plugin": "^3.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "helmet": "^3.21.2",
     "knex": "^0.20.7",
     "less": "^3.10.3",
