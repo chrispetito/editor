@@ -17,7 +17,7 @@
     "draft-js-static-toolbar-plugin": "^3.0.1",
     "express": "^4.17.1",
     "helmet": "^3.21.2",
-    "knex": "^0.20.7",
+    "knex": "^2.4.0",
     "less": "^3.10.3",
     "less-watch-compiler": "^1.14.1",
     "react": "^16.12.0",
